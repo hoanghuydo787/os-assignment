@@ -8,6 +8,8 @@ int empty(struct queue_t * q) {
 
 void enqueue(struct queue_t * q, struct pcb_t * proc) {
 	/* TODO: put a new process to queue [q] */	
+	q[q->size] = proc;
+	q->size++;
 }
 
 struct pcb_t * dequeue(struct queue_t * q) {
@@ -24,8 +26,14 @@ struct pcb_t * dequeue(struct queue_t * q) {
 		}
 	}
 	pcb_t res = q[ind];
-	free(q[ind]);
-	q[ind] = NULL;
+	for(int i = ind; i < q->size; i++){
+		if(i == q->size - 1){
+			q[i] = NULL;
+			break;
+		}
+		q[i] = q[i+1];
+	}
+	q->size--;
 	return res;
 	//return NULL;
 }
