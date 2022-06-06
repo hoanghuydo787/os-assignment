@@ -16,7 +16,7 @@ struct pcb_t * dequeue(struct queue_t * q) {
 	/* TODO: return a pcb whose prioprity is the highest
 	 * in the queue [q] and remember to remove it from q
 	 * */
-	if(!q) return NULL;
+	if(empty(q)) return NULL;
 	uint32_t priMax = q->proc[0]->priority;
 	int ind = 0;
 	for(int i = 1; i < q->size; i++){
