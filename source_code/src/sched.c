@@ -27,7 +27,7 @@ struct pcb_t * get_proc(void) {
 	if(!empty(&ready_queue)){
 		pthread_mutex_lock(&queue_lock);
 		proc = dequeue(&ready_queue);
-		enqueue(proc);
+		enqueue(&run_queue, proc);
 		pthread_mutex_unlock(&queue_lock);
 	}
 	else{
@@ -36,7 +36,7 @@ struct pcb_t * get_proc(void) {
 		}
 		pthread_mutex_lock(&queue_lock);
 		proc = dequeue(&ready_queue);
-		enqueue(proc);
+		enqueue(&run_queue, proc);
 		pthread_mutex_unlock(&queue_lock);
 		for(int i = 0; i < run_queue.size; i++){
 			pthread_mutex_lock(&queue_lock);

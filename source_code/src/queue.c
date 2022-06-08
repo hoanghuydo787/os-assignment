@@ -8,9 +8,8 @@ int empty(struct queue_t * q) {
 
 void enqueue(struct queue_t * q, struct pcb_t * proc) {
 	/* TODO: put a new process to queue [q] */
-	//check if queue is full
-	if (q->size < MAX_QUEUE_SIZE)
-	{
+	// check if queue is full
+	if (q->size < MAX_QUEUE_SIZE){
 		q->proc[q->size] = proc;
 		q->size++;
 	}
@@ -21,6 +20,7 @@ struct pcb_t * dequeue(struct queue_t * q) {
 	 * in the queue [q] and remember to remove it from q
 	 * */
 	if(empty(q)) return NULL;
+
 	uint32_t priMax = q->proc[0]->priority;
 	int ind = 0;
 	for(int i = 1; i < q->size; i++){
@@ -29,7 +29,7 @@ struct pcb_t * dequeue(struct queue_t * q) {
 			ind = i;
 		}
 	}
-	pcb_t res = q->proc[ind];
+	struct pcb_t * res = q->proc[ind];
 	for(int i = ind; i < q->size; i++){
 		if(i == q->size - 1){
 			q->proc[i] = NULL;
