@@ -103,8 +103,8 @@ addr_t alloc_mem(uint32_t size, struct pcb_t * proc) {
 	 * byte in the allocated memory region to [ret_mem].
 	 * */
 
-	uint32_t num_pages = (size % PAGE_SIZE) ? size / PAGE_SIZE :
-		size / PAGE_SIZE + 1; // Number of pages we will use
+	uint32_t num_pages = (size % PAGE_SIZE) ? size / PAGE_SIZE + 1:
+		size / PAGE_SIZE; // Number of pages we will use
 	int mem_avail = 0; // We could allocate new memory region or not?
 	
 	/* First we must check if the amount of free memory in
@@ -115,14 +115,12 @@ addr_t alloc_mem(uint32_t size, struct pcb_t * proc) {
 	 * to know whether this page has been used by a process.
 	 * For virtual memory space, check bp (break pointer).
 	 * */
-	//start check
-    int unused=0;
-    for (int i=0; i< NUM_PAGES&& unused!=num_pages;i++){
-        unused+=(_mem_stat[i].proc==0);
-    }
-
-	mem_avail=(unused==num_pages && proc->bp < (1<<ADDRESS_SIZE));
-    //end check
+	// check is there enough mem
+	int unused = 0;
+	for (int i = 0; i < NUM_PAGES && unused < num_pages; i++){
+			unused += (int)(_mem_stat[i].proc == 0);
+	}
+	mem_avail = (unused >= num_pages && proc->bp < (1<<ADDRESS_SIZE));
 	if (mem_avail) {
 		/* We could allocate new memory region to the process */
 		ret_mem = proc->bp;
