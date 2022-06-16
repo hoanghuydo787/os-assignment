@@ -193,12 +193,16 @@ int free_mem(addr_t address, struct pcb_t * proc) {
 	if(addr == -1){
 		pthread_mutex_unlock(&mem_lock);
 		return 1;
-	}   
+	}
+	int count;
 	while(_mem_stat[addr].next != -1){
 		_mem_stat[addr].proc = 0;
 		addr = _mem_stat[addr].next;
+		count++;
 	}
 	_mem_stat[addr].proc = 0;
+	count++;
+	proc->bp -= count * PAGE_SIZE;
   pthread_mutex_unlock(&mem_lock);
 	return 0;
 }
