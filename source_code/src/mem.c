@@ -120,7 +120,7 @@ addr_t alloc_mem(uint32_t size, struct pcb_t * proc) {
 	for (int i = 0; i < NUM_PAGES && unused < num_pages; i++){
 			unused += (int)(_mem_stat[i].proc == 0);
 	}
-	mem_avail = (unused >= num_pages && proc->bp < (1<<ADDRESS_SIZE));
+	mem_avail = (unused >= num_pages && proc->bp < (1 << ADDRESS_SIZE));
 	if (mem_avail) {
 		/* We could allocate new memory region to the process */
 		ret_mem = proc->bp;
@@ -194,15 +194,15 @@ int free_mem(addr_t address, struct pcb_t * proc) {
 		pthread_mutex_unlock(&mem_lock);
 		return 1;
 	}
-	int count;
+	//int count;
 	while(_mem_stat[addr].next != -1){
 		_mem_stat[addr].proc = 0;
 		addr = _mem_stat[addr].next;
-		count++;
+		//count++;
 	}
 	_mem_stat[addr].proc = 0;
-	count++;
-	proc->bp -= count * PAGE_SIZE;
+	//count++;
+	//proc->bp -= count * PAGE_SIZE;
   pthread_mutex_unlock(&mem_lock);
 	return 0;
 }
